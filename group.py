@@ -118,6 +118,21 @@ if __name__ ==  "__main__":
 	KML = """<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
 <Document>
+   <Style id="group">
+      <IconStyle>
+         <color>ff00ff00</color>
+         <scale>1.1</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/pal3/icon21.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="line">
+	 <LineStyle>
+        <color>7f00ffff</color>
+        <width>4</width>
+      </LineStyle>         
+   </Style>
 %s
 </Document>
 </kml>	
@@ -125,22 +140,53 @@ if __name__ ==  "__main__":
 
 	PLACEMARKER="""
   <Placemark>
-    <name>%d</name>
+    <name>%s</name>
     <description>%s</description>
     <Point>
       <coordinates>%f,%f,0</coordinates>
     </Point>
+    <styleUrl>%s</styleUrl>
+    %s
   </Placemark>
 """
+
+	LINE_PLACEMARK="""
+  <Placemark>
+    <name>%s</name>
+    <description>%s</description>
+    <styleUrl>#line</styleUrl>
+   <LineString>
+        <extrude>0</extrude>
+        <tessellate>0</tessellate>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>%s
+        </coordinates>	
+	</LineString>
+  </Placemark>
+
+"""
+
 	placemark = []
 	
 	for (i,g) in enumerate(grouper.groups):
 		c = g.get_centroid()
 		desc = []
 		for p in g.pts:
-			desc.append(str(p))
-		placemark.append(PLACEMARKER % (i, 
-			",".join(desc) , c.lng ,c.lat )) 
+			desc.append(str(p))			
+				
+		placemark.append(PLACEMARKER % (str(i), 
+			",".join(desc) , c.lng ,c.lat ,"group", "" )) 
+			
+		line = []
+		for (j,p) in  enumerate(g.pts):	
+			coord = "%f,%f\n%f,%f\n" % (c.lng , c.lat , p.lng,p.lat)
+			placemark.append(LINE_PLACEMARK % (str(i) + "-" + str(j), 
+				"" , coord )) 
+			
+
+	for p in pts:
+		placemark.append(PLACEMARKER % ("STOP", 
+			"" , p.lng ,p.lat ,"","")) 
 
 	print KML % ( "\n".join(placemark))
 
