@@ -62,7 +62,7 @@ class Grouper:
 	def __init__(self,radius=0.25,threshold=1.5):
 		self.groups = []
 		
-		self.tgdi = radius * 2
+		self.tgdi = radius
 		self.threshold = threshold
 		
 	def append(self,latlng):
@@ -75,16 +75,17 @@ class Grouper:
 			c = g.get_centroid()
 			dist = c.distance(latlng)
 			if dist < self.threshold:
-				ng = copy.copy(g)
+				ng = g.dup()
 				ng.append(latlng)
-				
-				diff = ng.get_gdi() - g.get_gdi()
-				if diff < min:
-					min = diff
-					target = g
+				if ng.get_radius() < self.threshold and ng.get_gdi() < self.tgdi:
+					diff = ng.get_gdi() - g.get_gdi()
+					if diff < min:
+						min = diff
+						target = g
 		
 		if target:
-			g.append(latlng)
+			target.append(latlng)
+			#print "DEBUG: " + str(g.get_radius())
 		else:
 			self.groups.append(LatLngGroup([latlng]))
 	
@@ -170,12 +171,12 @@ if __name__ ==  "__main__":
 	
 	for (i,g) in enumerate(grouper.groups):
 		c = g.get_centroid()
-		desc = []
-		for p in g.pts:
-			desc.append(str(p))			
+		desc = "Number: %d \n Radius : %f\n" % (len(g.pts),g.get_radius() )
+		#for p in g.pts:
+		#	desc.append(str(p))			
 				
 		placemark.append(PLACEMARKER % (str(i), 
-			",".join(desc) , c.lng ,c.lat ,"group", "" )) 
+			desc , c.lng ,c.lat ,"group", "" )) 
 			
 		line = []
 		for (j,p) in  enumerate(g.pts):	

@@ -1,4 +1,5 @@
 from LatLng import LatLng
+import copy
 
 class LatLngGroup:
 	
@@ -18,6 +19,11 @@ class LatLngGroup:
 		if self.dirty:
 			self._calc()
 		return self.gdi
+		
+	def get_radius(self):
+		if self.dirty:
+			self._calc()
+		return self.radius
 	
 	def append(self,pt):
 		self.pts.append(pt)
@@ -26,6 +32,16 @@ class LatLngGroup:
 	def remove(self,pt):
 		self.pts.remove(pt)
 		self.dirty = True
+		
+	def dup(self):
+		"""
+			Duplicate a copy of this group exclude the contained
+			points. 
+		"""
+		object = copy.copy(self)
+		object.pts = self.pts[:]
+		object.dirty = True
+		return object
 	
 	def __str__(self):
 		pts_str = []
@@ -42,8 +58,11 @@ class LatLngGroup:
 		
 		self.centroid = LatLng()
 		self.gdi = 0
+		self.radius = 0
+		
 		n = len(self.pts)
 		if n > 0:
+			self.radius = 0
 			lat = 0
 			lng = 0
 			for pt in self.pts:
@@ -54,7 +73,10 @@ class LatLngGroup:
 			self.centroid = LatLng(lat / n , lng / n)
 			
 			for pt in self.pts:
-				self.gdi += self.centroid.distance(pt)
+				dist = self.centroid.distance(pt)
+				self.gdi += dist
+				if dist > self.radius :
+					self.radius = dist
 			
 			self.gdi /= n
 
