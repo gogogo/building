@@ -93,8 +93,8 @@ if __name__ == "__main__":
 		sys.exit(-1)
 		
 	try:
-		x = args[1]
-		y = args[2]
+		x = int(args[1])
+		y = int(args[2])
 	except IndexError:
 		pass
 
