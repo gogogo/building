@@ -59,11 +59,11 @@ class Grouper:
 		A simple points grouping algorithm (preprocessing)
 	"""
 	
-	def __init__(self,radius=0.25,threshold=1.5):
+	def __init__(self,radius=0.4,max_walking_distance=1.0):
 		self.groups = []
 		
 		self.tgdi = radius
-		self.threshold = threshold
+		self.threshold = max_walking_distance / 2
 		
 	def append(self,latlng):
 		"""
