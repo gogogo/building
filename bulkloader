@@ -23,9 +23,11 @@ if __name__ == "__main__":
 	option_list = [
 		make_option("-d", "--debug",
 					action="store_true",  dest="debug",default=False),
+		make_option("-u", "--url",
+					action="store", type="string", dest="url",default="http://localhost:8000"),					
     ]
 
-	parser = OptionParser(option_list = option_list,usage="usage: bulkloader %s [url] [file]" % "|".join(models))
+	parser = OptionParser(option_list = option_list,usage="usage: bulkloader %s [file]" % "|".join(models))
 	(options , args ) = parser.parse_args()
 
 	try:
@@ -35,13 +37,10 @@ if __name__ == "__main__":
 		if not model in  models:
 			raise ValueError('Unknown model : %s ' % model)
 	
+		url = options.url
+	
 		try:
-			url = args[1]
-		except:
-			url = "http://localhost:8000"
-
-		try:
-			file = args[2]
+			file = args[1]
 		except:
 			file = "data/%s.txt" % model
 
