@@ -49,4 +49,4 @@ point_list = []
 for pt in points:
 	point_list.append("%f,%f" % pt)
 
-print "%s,%s,%s,\"%s\"" % (id,"",False, ",".join(point_list) )
+print "%s,%s,%s,\"%s\"" % (id,"",1, ",".join(point_list) )
