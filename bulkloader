@@ -7,6 +7,9 @@ import os
 # Supported models
 models = ["agency","stop"]
 
+def model_default_filename(model):
+	return "data/%s.txt" % model
+
 def upload(model,url,file,options):
 	opt = ""
 	if options.debug:
@@ -17,7 +20,13 @@ def upload(model,url,file,options):
 	
 	print cmd
 	os.system(cmd)
-	
+
+def upload_all(url,options):
+	for m in models:
+		file = model_default_filename(m)
+		if os.path.exists(file):
+			print "Upload %s" % model
+			upload(m,url,file,options)	
 
 if __name__ == "__main__":
 	option_list = [
@@ -27,24 +36,29 @@ if __name__ == "__main__":
 					action="store", type="string", dest="url",default="http://localhost:8000"),					
     ]
 
-	parser = OptionParser(option_list = option_list,usage="usage: bulkloader %s [file]" % "|".join(models))
+	parser = OptionParser(option_list = option_list,usage="usage: bulkloader all|%s [file]" % "|".join(models))
 	(options , args ) = parser.parse_args()
 
 	try:
 
 		model = args[0]
-		
-		if not model in  models:
-			raise ValueError('Unknown model : %s ' % model)
-	
 		url = options.url
-	
-		try:
-			file = args[1]
-		except:
-			file = "data/%s.txt" % model
+		
+		if model == "all":
 
-		upload(model,url,file,options)		
+			upload_all(url,options)
+
+		else:
+		
+			if not model in  models:
+				raise ValueError('Unknown model : %s ' % model)
+		
+			try:
+				file = args[1]
+			except:
+				file = model_default_filename(model)
+
+			upload(model,url,file,options)		
 		
 	except Exception,v:	
 		print v
