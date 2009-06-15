@@ -7,8 +7,8 @@ Transforms GeoRSS feed into comma delimited CSV file.
 Use any XSL Transformer supporting EXSLT, like xsltproc or Xalan2 (not 1.1)
 Usage example:
 
-# xsltproc geocss-to-kml.xsl blah.xml
-# java -jar /usr/share/java/xalan2.jar -xsl geocss-to-kml.xsl -in blah.rss
+# xsltproc geocss-to-csv.xsl blah.xml
+# java -jar /usr/share/java/xalan2.jar -xsl geocss-to-csv.xsl -in blah.rss
 
 -->
 
