@@ -7,8 +7,10 @@ import csv, codecs, cStringIO
 import copy
 from optparse import make_option, OptionParser
 
-from LatLng import LatLng
-from LatLngGroup import LatLngGroup
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "../gogogo-hk"))
+
+from gogogo.geo.LatLng import LatLng
+from gogogo.geo.LatLngGroup import LatLngGroup
 
 class UTF8Recoder:
 	"""
