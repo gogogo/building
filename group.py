@@ -11,6 +11,8 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) + "../gogogo-hk"))
 
 from gogogo.geo.LatLng import LatLng
 from gogogo.geo.LatLngGroup import LatLngGroup
+from kml import kml_dom
+import xml.dom.minidom
 
 class UTF8Recoder:
 	"""
@@ -117,10 +119,10 @@ if __name__ ==  "__main__":
 		grouper.append(pt)
 		
 #	print "group = " + str(len(grouper.groups))
-		
-	KML = """<?xml version="1.0" encoding="UTF-8"?>
-<kml xmlns="http://www.opengis.net/kml/2.2">
-<Document>
+	
+	dom = kml_dom()
+
+	group_style = 	xml.dom.minidom.parseString("""
    <Style id="group">
       <IconStyle>
          <color>ff00ff00</color>
@@ -129,19 +131,23 @@ if __name__ ==  "__main__":
             <href>http://maps.google.com/mapfiles/kml/pal3/icon21.png</href>
          </Icon>
       </IconStyle>
-   </Style>
+   </Style>"""
+	)
+	
+	line_style = xml.dom.minidom.parseString("""
    <Style id="line">
 	 <LineStyle>
         <color>7f00ffff</color>
         <width>4</width>
       </LineStyle>         
    </Style>
-%s
-</Document>
-</kml>	
-"""
+	""")
+	
+	dom.documentNode.appendChild(group_style.documentElement)
+	dom.documentNode.appendChild(line_style.documentElement)
 
 	PLACEMARKER="""
+	
   <Placemark>
     <name>%s</name>
     <description>%s</description>
@@ -151,9 +157,11 @@ if __name__ ==  "__main__":
     <styleUrl>%s</styleUrl>
     %s
   </Placemark>
+
 """
 
 	LINE_PLACEMARK="""
+
   <Placemark>
     <name>%s</name>
     <description>%s</description>
@@ -169,27 +177,30 @@ if __name__ ==  "__main__":
 
 """
 
-	placemark = []
-	
+
 	for (i,g) in enumerate(grouper.groups):
 		c = g.get_centroid()
 		desc = "Number: %d \n Radius : %f\n" % (len(g.pts),g.get_radius() )
 		#for p in g.pts:
-		#	desc.append(str(p))			
+		#	desc.append(str(p))
+
+		placemark = xml.dom.minidom.parseString(PLACEMARKER % (str(i), 
+			desc , c.lng ,c.lat ,"group", "" ))		
 				
-		placemark.append(PLACEMARKER % (str(i), 
-			desc , c.lng ,c.lat ,"group", "" )) 
+		dom.documentNode.appendChild(placemark.documentElement)
 			
-		line = []
 		for (j,p) in  enumerate(g.pts):	
 			coord = "%f,%f\n%f,%f\n" % (c.lng , c.lat , p.lng,p.lat)
-			placemark.append(LINE_PLACEMARK % (str(i) + "-" + str(j), 
-				"" , coord )) 
+			placemark = xml.dom.minidom.parseString(LINE_PLACEMARK % (str(i) + "-" + str(j), 
+			"" , coord ))
+			
+			dom.documentNode.appendChild(placemark.documentElement)
 			
 
 	for p in pts:
-		placemark.append(PLACEMARKER % ("STOP", 
+		placemark = xml.dom.minidom.parseString(PLACEMARKER % ("STOP", 
 			"" , p.lng ,p.lat ,"","")) 
+		dom.documentNode.appendChild(placemark.documentElement)
 
-	print KML % ( "\n".join(placemark))
+	print dom.toxml()
 
