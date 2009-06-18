@@ -1,0 +1,27 @@
+#!/usr/bin/python
+
+"""
+Convert KML address line to LatLng pair.
+
+For example ,
+
+$ kml-to-latlng
+114.058679,22.351858,0 114.059484,22.353222,0 114.060241,22.353557,0 114.062523,22.353305,0 114.061069,22.350044,0 114.059545,22.350513,0 114.060032,22.347605,0 114.058679,22.351858,0
+22.351858,114.058679  22.353222,114.059484  22.353557,114.060241  22.353305,114.062523  22.350044,114.061069  22.350513,114.059545  22.347605,114.060032  22.351858,114.058679 
+
+"""
+
+import sys
+
+text = sys.stdin.readline()
+while len(text) > 0:
+	input=text.split(" ")
+	output = []
+	for coord in input:
+		(lng,lat,x) = coord.split(',')
+		output.append("(%s,%s) " % ( lat,lng) )
+
+	print ",".join(output)
+	text = sys.stdin.readline()
+
+

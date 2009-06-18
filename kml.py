@@ -65,6 +65,8 @@ def Placemarker(name=None , desc = None , styleUrl = None , point = None,
 		convexhull = ConvexHull(group)
 		for pt in convexhull.polygon:
 			points += "%f,%f,0 " % (pt.lng,pt.lat)
+		if len(convexhull.polygon) > 1:
+			points += "%f,%f,0 " % (convexhull.polygon[0].lng,convexhull.polygon[0].lat)
 		
 		XML = """
 		<Polygon>

@@ -5,7 +5,7 @@ import sys
 import os
 
 # Supported models
-models = ["agency","stop"]
+models = ["agency","stop","route","shape","trip"]
 
 def model_default_filename(model):
 	return "data/%s.txt" % model

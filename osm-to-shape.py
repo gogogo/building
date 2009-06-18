@@ -18,6 +18,15 @@ def searchWayByName(dom,name):
 
 	return ret	
 
+def searchWayByID(dom,id):
+	ret = None
+	for node in dom.getElementsByTagName('way'):
+		if node.getAttribute("id") == id:
+			ret = node
+			break
+
+	return ret
+
 def extractPointsFromWay(dom,way):
 	ret = []
 	for nd in way.getElementsByTagName('nd'):
@@ -38,7 +47,7 @@ dom = parse(sys.argv[1])
 wayname=sys.argv[2].decode('UTF-8')
 id = sys.argv[3]
 
-way = searchWayByName(dom,wayname)
+way = searchWayByID(dom,wayname)
 if not way:
 	print "\"%s\" not found" % wayname
 	sys.exit(0)

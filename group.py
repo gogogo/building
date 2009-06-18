@@ -15,6 +15,8 @@ from kml import Kml
 from kml import Placemarker
 import xml.dom.minidom
 
+from Grouper import Grouper,GroupSwapOptimizer
+
 class UTF8Recoder:
 	"""
 	Iterator that reads an encoded stream and reencodes the input to UTF-8
@@ -58,43 +60,9 @@ def LatLngCompare(x,y):
 		elif x.lng < y.lng:
 			return -1
 		return 0	
-
-class Grouper:
-	"""
-		A simple points grouping algorithm (preprocessing)
-	"""
-	
-	def __init__(self,radius=0.4,max_walking_distance=1.0):
-		self.groups = []
-		
-		self.tgdi = radius
-		self.threshold = max_walking_distance / 2
-		
-	def append(self,latlng):
-		"""
-			Append a point to groups
-		"""
-		target = None
-		min = sys.maxint
-		for g in self.groups:
-			c = g.get_centroid()
-			dist = c.distance(latlng)
-			if dist < self.threshold:
-				ng = g.dup()
-				ng.append(latlng)
-				if ng.get_radius() < self.threshold and ng.get_gdi() < self.tgdi:
-					diff = ng.get_gdi() - g.get_gdi()
-					if diff < min:
-						min = diff
-						target = g
-		
-		if target:
-			target.append(latlng)
-			#print "DEBUG: " + str(g.get_radius())
-		else:
-			self.groups.append(LatLngGroup([latlng]))
 	
 if __name__ ==  "__main__":
+	debug = open("debug.log","wt")
 	args = sys.argv	
 	
 	input = args[1]
@@ -116,10 +84,13 @@ if __name__ ==  "__main__":
 	
 	grouper = Grouper()
 	for (i,pt) in enumerate(pts):
-#		print "Process " +str(i) +  ":" + str(pt)		
 		grouper.append(pt)
+	
+	optimizer = GroupSwapOptimizer(grouper)
+	optimizer.process()
 		
-#	print "group = " + str(len(grouper.groups))
+
+	#Output generation
 	
 	dom = Kml()
 
@@ -151,55 +122,27 @@ if __name__ ==  "__main__":
    </Style>
 	""")
 	
+	sys.stderr.write("No. of swap = %d\n" % optimizer.swap_count)
+	
 	dom.documentNode.appendChild(group_style.documentElement)
 	dom.documentNode.appendChild(line_style.documentElement)
 
-	LINE_PLACEMARK="""
-
-  <Placemark>
-    <name>%s</name>
-    <description>%s</description>
-    <styleUrl>#line</styleUrl>
-   <LineString>
-        <extrude>0</extrude>
-        <tessellate>0</tessellate>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>%s
-        </coordinates>	
-	</LineString>
-  </Placemark>
-
-"""
-
-
 	for (i,g) in enumerate(grouper.groups):
+		debug.write("group %d\n" % i)
+		debug.write(g.toString(6) + "\n")
 		c = g.get_centroid()
 		desc = "Number: %d \n Radius : %f\n" % (len(g.pts),g.get_radius() )
-		#for p in g.pts:
-		#	desc.append(str(p))
 
 		placemark = Placemarker(name = str(i) , desc=desc, point = c ,styleUrl="group" )
-		#placemark = xml.dom.minidom.parseString(PLACEMARKER % (str(i), 
-		#	desc , c.lng ,c.lat ,"group", "" ))		
 				
 		dom.documentNode.appendChild(placemark.documentElement)
 		
 		polygon = Placemarker(name=str(i) , group = g ,styleUrl="group")
-		dom.documentNode.appendChild(polygon.documentElement)
-			
-		#for (j,p) in  enumerate(g.pts):	
-		#	coord = "%f,%f\n%f,%f\n" % (c.lng , c.lat , p.lng,p.lat)
-		#	placemark = xml.dom.minidom.parseString(LINE_PLACEMARK % (str(i) + "-" + str(j), 
-		#	"" , coord ))
-			
-		#	dom.documentNode.appendChild(placemark.documentElement)
-			
+		dom.documentNode.appendChild(polygon.documentElement)			
 
 	for p in pts:
 		placemark = Placemarker(name="STOP" , point = p)
-		#placemark = xml.dom.minidom.parseString(PLACEMARKER % ("STOP", 
-		#	"" , p.lng ,p.lat ,"","")) 
 		dom.documentNode.appendChild(placemark.documentElement)
 
 	print dom.toxml()
-
+	debug.close()
