@@ -19,6 +19,8 @@ class Grouper:
 	def append(self,latlng):
 		"""
 			Append a point to groups
+		@param latlng
+		@type latlng gogogo.geo.LatLng
 		"""
 		target = None
 		min = sys.maxint
