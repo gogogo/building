@@ -4,6 +4,7 @@ from gogogo.geo.LatLng import LatLng
 from gogogo.geo.LatLngGroup import LatLngGroup
 from Grouper import Grouper,GroupSwapOptimizer
 from google.appengine.ext import db
+from gogogo.geo.ConvexHull import ConvexHull
 
 # Clusterer - Divide stops into cluster (For producing non-optimized result)
 
@@ -79,7 +80,9 @@ pts.sort(LatLngCompare)
 for pt in pts:
 	clusterer.append(pt)
 
-result = []
+saveClusterList = []
+saveShapeList = []
+newShapeCount = 0
 
 for g in clusterer.getGroups():
 	cluster = g.getData()
@@ -99,7 +102,43 @@ for g in clusterer.getGroups():
 	
 	cluster.radius = float(g.get_radius())
 
-	result.append(cluster)
+	saveClusterList.append(cluster)
+	
 
-print "Writing %d cluster data back to server" % len(result)
-db.put(result)
+print "Writing %d of cluster data back to server" % len(saveClusterList)
+db.put(saveClusterList)
+
+saveClusterList = []
+
+for g in clusterer.getGroups():
+	cluster = g.getData()
+	
+	shape = cluster.shape
+	if shape == None:
+		shape = Shape()
+		shape.setOwner(cluster)
+		shape.type = 1
+		shape.color = "#08f6dd"
+		
+		newShapeCount += 1
+		
+		saveClusterList.append(cluster)
+		db.put(shape)
+		
+		cluster.shape = shape
+	
+	convexhull = ConvexHull(g)
+	for pt in convexhull.polygon:
+		shape.points.append(pt.lat)
+		shape.points.append(pt.lng)
+		
+	saveShapeList.append(shape)
+	
+print "%d of shapes created " % newShapeCount
+
+print "Writing %d of cluster data back to server" % len(saveClusterList)
+db.put(saveClusterList)
+			
+print "Writing %d of shape data back to server" % len(saveShapeList)
+db.put(saveShapeList)
+
