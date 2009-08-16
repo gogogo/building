@@ -40,6 +40,17 @@ class Grouper:
 			target.append(latlng)
 		else:
 			self.groups.append(LatLngGroup([latlng]))
+			
+	def appendGroup(self,group):
+		"""
+		Append a LatLngGroup to Grouper
+		
+		@type group  gogogo.geo.LatLngGroup
+		"""
+		self.groups.append(group)
+		
+	def getGroups(self):
+		return self.groups
 
 class GroupSwapOptimizer:
 	"""
