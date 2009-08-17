@@ -37,20 +37,47 @@ print "%d of clusters loaded" % len(clusters)
 
 clusterer = Grouper()
 
-for c in clusters:
+for c in clusters: # Initial clusters
 	g = LatLngGroup()
-	g.setData(c)
+	g.set_data(c)
 	for key in c.members:
 		pt = LatLng()
 		s = stops[key.id_or_name()]
 		pt.lat = s.latlng.lat
 		pt.lng = s.latlng.lon
-		pt.setData(s)
+		pt.set_data(s)
 		g.append(pt)
+		
+		if c.station != None:
+			g.set_fixed_centroid(LatLng(c.station.latlng.lat ,c.station.latlng.lon ) )
 		
 		del stops[key.id_or_name()]
 		
 	clusterer.appendGroup(g)
+
+stations = []
+for id in  stops:
+	s = stops[id]
+	if s.location_type == 1:
+		stations.append(s)
+		
+		cluster = Cluster()
+		cluster.set_station(s)
+
+		pt = LatLng(s.latlng.lat,s.latlng.lon)
+		pt.set_data(s)
+		
+		g = LatLngGroup()
+		g.set_data(cluster)
+		g.append(pt)
+		g.set_fixed_centroid(pt)
+		
+		clusterer.appendGroup(g)
+
+print "%d of stations found"	% len(stations)
+
+for stop in stations:
+	del stops[stop.key().id_or_name()]
 
 def LatLngCompare(x,y):
 	if x.lat > y.lat:
@@ -70,7 +97,7 @@ for id in  stops:
 	pt = LatLng()
 	pt.lat = s.latlng.lat
 	pt.lng = s.latlng.lon
-	pt.setData(s)
+	pt.set_data(s)
 	pts.append(pt)
 
 print "%d of stops are not listed in any cluster" % len(stops)
@@ -85,15 +112,15 @@ saveShapeList = []
 newShapeCount = 0
 
 for g in clusterer.getGroups():
-	cluster = g.getData()
+	cluster = g.get_data()
 	
 	if cluster == None:
 		cluster = Cluster() # Create a new cluster entry
-		g.setData(cluster)
+		g.set_data(cluster)
 	
 	cluster.members = []
 	for pt in g.pts: # Found newly added stop
-		cluster.members.append(pt.getData().key())		
+		cluster.members.append(pt.get_data().key())		
 		
 	center = g.get_centroid()
 	
@@ -113,14 +140,14 @@ clusters = saveClusterList
 saveClusterList = []
 
 for g in clusterer.getGroups():
-	cluster = g.getData()
+	cluster = g.get_data()
 	if cluster == None:
 		continue
 
 	shape = cluster.shape
 	if shape == None:
 		shape = Shape()
-		shape.setOwner(cluster)
+		shape.set_owner(cluster)
 		shape.type = 1
 		shape.color = "#08f6dd"
 		

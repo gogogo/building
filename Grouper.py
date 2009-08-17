@@ -22,19 +22,9 @@ class Grouper:
 		@param latlng
 		@type latlng gogogo.geo.LatLng
 		"""
-		target = None
-		min = sys.maxint
-		for g in self.groups:
-			c = g.get_centroid()
-			dist = c.distance(latlng)
-			if dist < self.threshold:
-				ng = g.dup()
-				ng.append(latlng)
-				if ng.get_radius() < self.threshold and ng.get_gdi() < self.tgdi:
-					diff = ng.get_gdi() - g.get_gdi()
-					if diff < min:
-						min = diff
-						target = g
+	
+		#target = self.selectGroupByGdi(latlng)
+		target = self.selectGroupByDist(latlng)
 		
 		if target:
 			target.append(latlng)
@@ -51,6 +41,37 @@ class Grouper:
 		
 	def getGroups(self):
 		return self.groups
+		
+	def selectGroupByGdi(self,latlng):
+		target = None
+		min = sys.maxint
+		for g in self.groups:
+			c = g.get_centroid()
+			dist = c.distance(latlng)
+			if dist < self.threshold:
+				ng = g.dup()
+				ng.append(latlng)
+				if ng.get_radius() < self.threshold and ng.get_gdi() < self.tgdi:
+					diff = ng.get_gdi() - g.get_gdi()
+					if diff < min:
+						min = diff
+						target = g
+
+		return target
+	
+	def selectGroupByDist(self,latlng):
+		target = None
+
+		min = sys.maxint
+		for g in self.groups:
+			c = g.get_centroid()
+			dist = c.distance(latlng)
+			if dist < min and dist < self.threshold:
+				target =g 
+				min = dist
+				
+		return target
+					
 
 class GroupSwapOptimizer:
 	"""
