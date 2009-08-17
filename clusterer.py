@@ -89,6 +89,7 @@ for g in clusterer.getGroups():
 	
 	if cluster == None:
 		cluster = Cluster() # Create a new cluster entry
+		g.setData(cluster)
 	
 	cluster.members = []
 	for pt in g.pts: # Found newly added stop
@@ -108,11 +109,14 @@ for g in clusterer.getGroups():
 print "Writing %d of cluster data back to server" % len(saveClusterList)
 db.put(saveClusterList)
 
+clusters = saveClusterList
 saveClusterList = []
 
 for g in clusterer.getGroups():
 	cluster = g.getData()
-	
+	if cluster == None:
+		continue
+
 	shape = cluster.shape
 	if shape == None:
 		shape = Shape()
