@@ -59,12 +59,11 @@ for c in clusters: # Initial clusters
 stations = []
 for id in  stops:
     s = stops[id]
-    if s.location_type == 1:
-        #Create custer based on station
+    if s.location_type == 1:        
+        #Create cluster based on station
         stations.append(s)
-        
+
         key_name = next_key_name(Cluster , MLStringProperty.to_key_name(s.name))
-        print key_name
         cluster = Cluster(key_name = key_name)
         cluster.set_station(s)
 
@@ -150,7 +149,8 @@ for g in clusterer.getGroups():
 
     shape = cluster.shape
     if shape == None:
-        shape = Shape()
+        key_name = next_key_name(Shape , cluster.key().name())
+        shape = Shape(key_name = key_name)
         shape.set_owner(cluster)
         shape.type = 1
         shape.color = "#08f6dd"
