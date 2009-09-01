@@ -1,5 +1,5 @@
 # Find stations
-# Given a input file with the name of station , dump all station with matching name
+# Given a input file with the name of stations , dump the ID of all station with matching name
 
 import codecs
 from StringIO import StringIO
@@ -25,7 +25,7 @@ def run(input):
     result = {}
     
     for line in file:
-        name = line.rstrip("\n").rstrip("\r")
+        name = line.rstrip("\n").rstrip("\r").strip(" ")
         if len(name) <= 1:
             continue
 
