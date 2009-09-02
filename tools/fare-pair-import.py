@@ -129,7 +129,7 @@ def run(fare_stop_id, mapping_file,input_file,col):
                     #break
                     
             if not entry:
-                key_name = next_key_name(FarePair,FarePair.gen_key_name(key,from_stop_key,to_stop_key))
+                key_name = next_key_name(FarePair,FarePair.gen_key_name(owner = key,from_stop = from_stop_key,to_stop = to_stop_key))
                 print "Create new entry %s " % key_name
                 entry =  FarePair(owner = key , from_stop = from_stop_key , to_stop = to_stop_key ,key_name = key_name,fare = fare)
                 to_save.append(entry)

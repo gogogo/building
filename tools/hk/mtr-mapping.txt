@@ -1,0 +1,242 @@
+{
+ "Heng On": [
+  "MTR_Heng_On"
+ ], 
+ "Fanling": [
+  "MTR_Fanling"
+ ], 
+ "Sheung Wan": [
+  "MTR_Sheung_Wan"
+ ], 
+ "Yau Ma Tei": [
+  "MTR_Yau_Ma_Tei"
+ ], 
+ "Siu Hong": [
+  "MTR_Siu_Hong"
+ ], 
+ "Quarry Bay": [
+  "MTR_Quarry_Bay"
+ ], 
+ "Lok Fu": [
+  "MTR_Lok_Fu"
+ ], 
+ "Cheung Sha Wan": [
+  "MTR_Cheung_Sha_Wan"
+ ], 
+ "Kowloon Tong": [
+  "MTR_Kowloon_Tong"
+ ], 
+ "Shek Kip Mei": [
+  "MTR_Shek_Kip_Mei"
+ ], 
+ "Sheung Shui": [
+  "MTR_Sheung_Shui"
+ ], 
+ "Lo Wu": [
+  "MTR_Lo_Wu"
+ ], 
+ "Mong Kok East": [
+  "MTR_Mong_Kok_East"
+ ], 
+ "Lai Chi Kok": [
+  "MTR_Lai_Chi_Kok"
+ ], 
+ "Tai Wo Hau": [
+  "MTR_Tai_Wo_Hau"
+ ], 
+ "Lam Tin": [
+  "MTR_Lam_Tin"
+ ], 
+ "City One": [
+  "MTR_City_One"
+ ], 
+ "North Point": [
+  "MTR_North_Point"
+ ], 
+ "Kwun Tong": [
+  "MTR_Kwun_Tong"
+ ], 
+ "Shek Mun": [
+  "MTR_Shek_Mun"
+ ], 
+ "Prince Edward": [
+  "MTR_Prince_Edward"
+ ], 
+ "Kowloon Bay": [
+  "MTR_Kowloon_Bay"
+ ], 
+ "Disneyland Resort": [
+  "MTR_Disneyland_Resort"
+ ], 
+ "Tin Hau": [
+  "MTR_Tin_Hau"
+ ], 
+ "Tsuen Wan West": [
+  "MTR_Tsuen_Wan_West"
+ ], 
+ "Hung Hom": [
+  "MTR_Hung_Hom"
+ ], 
+ "Tai Shui Hang": [
+  "MTR_Tai_Shui_Hang"
+ ], 
+ "Mei Foo": [
+  "MTR_Mei_Foo"
+ ], 
+ "Fortress Hill": [
+  "MTR_Fortress_Hill"
+ ], 
+ "Long Ping": [
+  "MTR_Long_Ping"
+ ], 
+ "Tsing Yi": [
+  "MTR_Tsing_Yi"
+ ], 
+ "Tseung Kwan O": [
+  "MTR_Tseung_Kwan_O"
+ ], 
+ "Tai Wai": [
+  "MTR_Tai_Wai"
+ ], 
+ "Jordan": [
+  "MTR_Jordan"
+ ], 
+ "Hang Hau": [
+  "MTR_Hang_Hau"
+ ], 
+ "Choi Hung": [
+  "MTR_Choi_Hung"
+ ], 
+ "Heng Fa Chuen": [
+  "MTR_Heng_Fa_Chuen"
+ ], 
+ "Nam Cheong": [
+  "MTR_Nam_Cheong"
+ ], 
+ "Hong Kong": [
+  "MTR_Hong_Kong"
+ ], 
+ "Kam Sheung Road": [
+  "MTR_Kam_Sheung_Road"
+ ], 
+ "Tsuen Wan": [
+  "MTR_Tsuen_Wan" 
+ ], 
+ "Tin Shui Wai": [
+  "MTR_Tin_Shui_Wai"
+ ], 
+ "Wu Kai Sha": [
+  "MTR_Wu_Kai_Sha"
+ ], 
+ "Tiu Keng Leng": [
+  "MTR_Tiu_Keng_Leng"
+ ], 
+ "Central": [
+  "MTR_Central"
+ ], 
+ "Kwai Fong": [
+  "MTR_Kwai_Fong"
+ ], 
+ "Lok Ma Chau": [
+  "MTR_Lok_Ma_Chau"
+ ], 
+ "Tai Koo": [
+  "MTR_Tai_Koo"
+ ], 
+ "Sham Shui Po": [
+  "MTR_Sham_Shui_Po"
+ ], 
+ "University": [
+  "MTR_University"
+ ], 
+ "Olympic": [
+  "MTR_Olympic"
+ ], 
+ "Tai Po Market": [
+  "MTR_Tai_Po_Market"
+ ], 
+ "Che Kung Temple": [
+  "MTR_Che_Kung_Temple"
+ ], 
+ "Wan Chai": [
+  "MTR_Wan_Chai"
+ ], 
+ "Ma On Shan": [
+  "MTR_Ma_On_Shan"
+ ], 
+ "Shau Kei Wan": [
+  "MTR_Shau_Kei_Wan"
+ ], 
+ "Chai Wan": [
+  "MTR_Chai_Wan"
+ ], 
+ "Kwai Hing": [
+  "MTR_Kwai_Hing"
+ ], 
+ "Sai Wan Ho": [
+  "MTR_Sai_Wan_Ho"
+ ], 
+ "Tsim Sha Tsui": [
+  "MTR_Tsim_Sha_Tsui"
+ ], 
+ "Sha Tin Wai": [
+  "MTR_Sha_Tin_Wai"
+ ], 
+ "Po Lam": [
+  "MTR_Po_Lam"
+ ], 
+ "Tuen Mun": [
+  "MTR_Tuen_Mun"
+ ], 
+ "Racecourse": [
+  "MTR_Racecourse"
+ ], 
+ "Admiralty": [
+  "MTR_Admiralty"
+ ], 
+ "Yau Tong": [
+  "MTR_Yau_Tong"
+ ], 
+ "Ngau Tau Kok": [
+  "MTR_Ngau_Tau_Kok"
+ ], 
+ "Diamond Hill": [
+  "MTR_Diamond_Hill"
+ ], 
+ "Causeway Bay": [
+  "MTR_Causeway_Bay"
+ ], 
+ "East Tsim Sha Tsui": [
+  "MTR_East_Tsim_Sha_Tsui"
+ ], 
+ "Sha Tin": [
+  "MTR_Sha_Tin" 
+ ], 
+ "Tai Wo": [
+  "MTR_Tai_Wo" 
+ ], 
+ "Fo Tan": [
+  "MTR_Fo_Tan"
+ ], 
+ "Tung Chung": [
+  "MTR_Tung_Chung"
+ ], 
+ "Lai King": [
+  "MTR_Lai_King"
+ ], 
+ "Kowloon": [
+  "MTR_Kowloon"
+ ], 
+ "Sunny Bay": [
+  "MTR_Sunny_Bay"
+ ], 
+ "Mong Kok": [
+  "MTR_Mong_Kok" 
+ ], 
+ "Yuen Long": [
+  "MTR_Yuen_Long"
+ ], 
+ "Wong Tai Sin": [
+  "MTR_Wong_Tai_Sin"
+ ]
+}
