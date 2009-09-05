@@ -36,9 +36,11 @@ while entities:
 
 print "%d of clusters loaded" % len(clusters)
 
+# Start processing
+
 clusterer = Grouper()
 
-for c in clusters: # Initial clusters
+for c in clusters: # Initializer clusters
     g = LatLngGroup()
     g.set_data(c)
     for key in c.members:
@@ -94,6 +96,7 @@ def LatLngCompare(x,y):
             return -1
         return 0	
 
+# Convert stop that are not belonged to any cluster to LatLng
 pts = []
 for id in  stops:
     s = stops[id]
@@ -161,6 +164,8 @@ for g in clusterer.getGroups():
         db.put(shape)
         
         cluster.shape = shape
+        
+    shape.points = []
 
     convexhull = ConvexHull(g)
     for pt in convexhull.polygon:
