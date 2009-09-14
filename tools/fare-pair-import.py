@@ -52,7 +52,8 @@ def run(fare_stop_id, mapping_file,input_file,col):
     from google.appengine.ext import db
     from django.utils import simplejson
     from gogogo.views.db.forms import next_key_name
-    
+    from django.utils import simplejson
+        
     key = db.Key.from_path(FareStop.kind(),id_or_name(fare_stop_id))
     
     fare_stop = FareStop.get(key)
@@ -76,26 +77,11 @@ def run(fare_stop_id, mapping_file,input_file,col):
     to_save = []
     print "Loading from database...."
     
-    #pairs = []
-    pairs = {}
-    entities = FarePair.all().filter("owner =",key).fetch(100)
-    
     from_stop_property = getattr(FarePair, "from_stop")
     to_stop_property = getattr(FarePair, "to_stop")
     
-    while entities:
-        print "Loading 100 records from database..."
-        for entry in entities:
-            #pairs.append(entry)
+    fares = []
             
-            from_stop_key = from_stop_property.get_value_for_datastore(entry)
-            to_stop_key = to_stop_property.get_value_for_datastore(entry)
-            
-            if not from_stop_key.id_or_name() in pairs:
-                pairs[from_stop_key.id_or_name()] = {}
-            pairs[from_stop_key.id_or_name()][to_stop_key.id_or_name()] = entry
-        entities = FarePair.all().filter('__key__ >', entities[-1].key()).filter("owner  =",key).fetch(100)    
-    
     for row in reader:
         if first:
             first = False
@@ -112,40 +98,21 @@ def run(fare_stop_id, mapping_file,input_file,col):
             
             from_stop_id = mapping[row[0]][0]
             to_stop_id = mapping[row[1]][0]
-            from_stop_key = db.Key.from_path(Stop.kind(),id_or_name(from_stop_id))
-            to_stop_key = db.Key.from_path(Stop.kind(),id_or_name(to_stop_id))
             
-            entry = None
+            entry = {
+                "from" : from_stop_id,
+                "to" : to_stop_id,
+                "fare" : fare
+            }
+            fares.append(entry)
             
-            try:
-                entry = pairs[from_stop_id][to_stop_id]
-            except KeyError:
-                pass
-            
-            #for pair in pairs:
-                #if (str(pair.from_stop.key().id_or_name()) == from_stop_id and 
-                    #str(pair.to_stop.key().id_or_name()) == to_stop_id):
-                    #entry = pair
-                    #break
-                    
-            if not entry:
-                entry =  FarePair(owner = key , from_stop = from_stop_key , to_stop = to_stop_key ,auto_set_key_name = True)
-                entry.fare = fare
-                to_save.append(entry)
-            else:            
-                if entry.fare != fare:
-                    entry.fare = fare
-                    to_save.append(entry)
-                            
-            if len(to_save) > 1000:
-                print "Saving 1000 records to database..."
-                db.put(to_save)
-                to_save = []
-            
-            #print from_stop_id,to_stop_id , row[col]
         except KeyError,e:
             print "Station not found! : %s" % str(e)
+            
+    content = StringIO()
+    simplejson.dump(fares,content,ensure_ascii=False)
+    fare_stop.fares = content.getvalue()
     
     print "Saving to database..."
-    db.put(to_save)
-    print "%d of record saved" % len(to_save)
+    db.put(fare_stop)
+
