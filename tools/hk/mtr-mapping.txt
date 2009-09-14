@@ -238,5 +238,11 @@
  ], 
  "Wong Tai Sin": [
   "MTR_Wong_Tai_Sin"
+ ],
+ "Austin" : [
+   "mtr-austin-station"
+ ],
+ "LOHAS Park" : [
+    "mtr-lohas-park"
  ]
 }
